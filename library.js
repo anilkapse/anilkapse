@@ -1,5 +1,37 @@
-"use strict";
+function ready(f) {
+	var j=document;
+	if (j.readyState === 'complete' || j.readyState === 'interactive') {
+		if (j.attachEvent) {
+			setTimeout(f, 0);
+		} else {
+			f();
+		}
+	} else if (j.addEventListener) {
+		j.addEventListener('DOMContentLoaded', f);
+	} else {
+		if (j.attachEvent && !j.addEventListener) {
+			j.attachEvent('onreadystatechange', function() {
+				if (j.readyState === 'complete') {
+					f();
+				}
+			});
+		}
+	}
+}
+
+/*----
+Native JS Polyfills --
+*/
 var toString = Object.prototype.toString;
+if (!Array.isArray) {
+	Array.isArray = function(a) {
+		return toString.call(a) === "[object Array]";
+	};
+}
+/*----
+Native JS Polyfills Ends --
+*/
+
 
 function trim(s){
 	return String.prototype.trim ?
@@ -18,11 +50,7 @@ if (!String.prototype.trim){
 		return this.replace(/^[\s\uFEFF\xA0\u1680\u2000-\u200A\u202F\u205F\u3000]+|[\s\uFEFF\xA0\u1680\u2000-\u200A\u202F\u205F\u3000]+$/g, '')
 	}
 }
-if (!Array.isArray) {
-	Array.isArray = function(a) {
-		return toString.call(a) === "[object Array]";
-	};
-}
+
 
 function toArray( v ) {
   if ( Array.isArray(v) ) {
@@ -60,6 +88,8 @@ function addClass(e, c) {
 		}
 	}
 }
+/* Script -- */
+
 function evalScript(s){
 	var j = document,
 	h= j.getElementsByTagName("head")[0] || j.documentElement;
@@ -90,7 +120,7 @@ function _jsonp(u,f,n){
 	window[n]=f;
 	return jsonp(u,f)
 }
-
+/* Scripts */
 function uniqueWord(s) {
 	return String(s).replace(/(\b\S+\b)(?=.*\1)/ig, "" )
 }
@@ -189,26 +219,7 @@ function removeEvent(e, t, n) {
 		e.removeEventListener(t, n, !1)
 	} catch (v) {} else e && e.detachEvent && e.detachEvent("on" + t, n)
 }
-function ready(fn) {
-	var j=document;
-	if (j.readyState === 'complete' || j.readyState === 'interactive') {
-		if (j.attachEvent) {
-			setTimeout(fn, 0);
-		} else {
-			fn();
-		}
-	} else if (j.addEventListener) {
-		j.addEventListener('DOMContentLoaded', fn);
-	} else {
-		if (j.attachEvent && !j.addEventListener) {
-			j.attachEvent('onreadystatechange', function() {
-				if (j.readyState === 'complete') {
-					fn();
-				}
-			});
-		}
-	}
-}
+
 
 function ajax(o) {
 	var x;
