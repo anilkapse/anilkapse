@@ -111,7 +111,7 @@
 	}
 	function loadJSONP(u,f,n){
 		var s,  q = /\?/, m;
-		n = n || (m = u.match(/(?<=callback\=)[a-zA-z0-9_$]+(?=&|$)/)) && m[0] || String(Math.random()).replace( /\D/g, "" );
+		n = n || (m = u.match(/(?<=callback\=)[a-zA-z0-9_$]+(?=&|$)/)) && m[0] || "callback_"+String(Math.random()).replace( /\D/g, "" );
 		u = u + ( q.test( u ) ? "&" : "?" ) + "callback="+n;
 		s = createScript(u), s.onerror = function() {
 			console.error("There was a network error while trying to load the script")
@@ -121,7 +121,7 @@
 	}
 	/*var m = u.match(r) && u.match(r)[0]
 	if (m && n){
-	u = url.replace(m, n)
+	u = m && u.replace(m, n) || u + ( q.test( u ) ? "&" : "?" ) + "callback="+n
 	}else{
 	n = "callback_"+String(Math.random()).replace( /\D/g, "" );
 	u = u + ( q.test( u ) ? "&" : "?" ) + "callback="+n;
@@ -386,7 +386,7 @@
 		} );
 	}
 	function dataPriv(o) {
-		var D = "_PrivateData_w84mw5a";
+		var D = "_Expando_w84mw5a";
 		return {
 			cache: function(){
 				var c = o[ D ];
